@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>replit</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      $("#searchBtn").on('click', function () {
+        var searchItem = $("#movieSearchBar").val();
+        var typeCont = $("#content").val();
+        const apikey = "130d2b6b";
+        var apiURL = "https://www.omdbapi.com/?s=" + searchItem + "&type=" + typeCont + "&apikey=" + apikey;
+        $.getJSON(apiURL, function (result) {
+          var searchResult = "";
+          if (result.Response == "True") {
+            $.each(result.Search, function (i, item) {
+              searchResult += "<div class='col-md-3'>";
+              searchResult += "<br>"
+              searchResult += "<img src=" + item.Poster + "class='img-responsive' height='300' width='200'>"
+              searchResult += "<h4 style='color:white;'>" + item.Title + "</h4>";
+              searchResult += "<p style='color:white;'>" + item.Type + "</p>";
+              searchResult += "<p style='color:white;'>" + item.Year + "</p>";
+              searchResult += "<a href='https://www.imdb.com/title/" + item.imdbID + "' target='_blank'>IMDb</a>";
+              searchResult += "</div>";
+            });
+            $("#showPoster").html(searchResult);
+          }
+          else {
+            alert("Invalid Input");
+            console.log("bad Request");
+          };
+        });
+      });
+    });
+
+
+
+
+
+
+
+  </script>
+</head>
+
+<body>
+  <main>
+    <div class="container">
+      <div id="headArea">
+        <h1>
+          OMDB Search
+        </h1>
+      </div>
+      <br>
+      <div class="form-group">
+        <input class="form-control" id="movieSearchBar" type="text" placeholder="Search movies/shows">
+      </div>
+      <div class="form-group">
+        <select class="form-control" id="content">
+          <option value="" hidden>Content Type</option>
+          <option value="">All</option>
+          <option value="movie">Movie</option>
+          <option value="series">Series</option>
+          <option value="game">Game</option>
+        </select>
+      </div>
+      <button class="btn btn-primary" id="searchBtn">Search</button>
+      <br>
+      <div id="showPoster" class="row">
+      </div>
+    </div>
+  </main>
+</body>
+
+</html>
